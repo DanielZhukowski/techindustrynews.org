@@ -1,0 +1,42 @@
+<%- include('partials/head', { pageTitle: 'Latest Tech Industry News' }) %>
+<%- include('partials/header', { categories }) %>
+      <section class="hero">
+        <div class="container">
+          <h1>Tech Intelligence for the Curious</h1>
+          <p>Tech Industry News tracks the systems powering the economy — AI breakthroughs, chip roadmaps, enterprise platforms, and the companies steering the modern stack.</p>
+        </div>
+      </section>
+      <section class="news-feed">
+        <div class="container">
+          <h2>Latest Headlines</h2>
+          <% if (!articles || articles.length === 0) { %>
+            <p class="empty-state">The feed is syncing. Check back shortly.</p>
+          <% } %>
+          <div class="grid">
+            <% (articles || []).forEach(function(article) { %>
+              <article class="card">
+                <a class="card-visual card-visual-link" href="/news/<%= article.slug %>" aria-label="Read '<%= article.title %>'">
+                  <span class="card-visual-title"><%= article.title %></span>
+                </a>
+                <p class="meta">
+                  <span><%= article.publishedAt ? new Date(article.publishedAt).toLocaleString('en-US', { dateStyle: 'medium'}) : 'Recently updated' %></span>
+                  <span>by <a href="/editorial-team">Editorial team</a></span>
+                </p>
+                <div class="excerpt">
+                  <p><%= article.excerpt || '' %></p>
+                  <p class="read-more-wrapper">
+                    <a class="read-more" href="/news/<%= article.slug %>">Read more</a>
+                  </p>
+                </div>
+                <ul class="category-tags">
+                  <% (article.categories || []).slice(0, 4).forEach(function (category) { %>
+                    <li><a href="/category/<%= category.slug %>"><%= category.name %></a></li>
+                  <% }); %>
+                </ul>
+              </article>
+            <% }); %>
+          </div>
+          <%- include('partials/pagination', { pagination }) %>
+        </div>
+      </section>
+<%- include('partials/footer', { lastFetched }) %>
